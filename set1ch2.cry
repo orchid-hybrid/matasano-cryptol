@@ -1,0 +1,14 @@
+module set1ch2 where
+
+import set1ch1
+
+xor as bs = [ a ^ b | a <- as | b <- bs ]
+
+strA = "1c0111001f010100061a024b53535009181c"
+strB = "686974207468652062756c6c277320657965"
+strC = "746865206b696420646f6e277420706c6179"
+
+property challenge2 = fromHex strC == xor (fromHex strA) (fromHex strB)
+
+// set1ch2> :prove challenge2
+// Q.E.D.
