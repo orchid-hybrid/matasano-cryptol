@@ -1,0 +1,32 @@
+module set1ch1 where
+
+
+// Translate a hex string into a string of bits
+
+hexit : Char -> [4]
+hexit c = drop (if '0' <= c && c <= '9' then c - '0'
+                else if 'a' <= c  && c <= 'f' then c - 'a' + 10
+                else 0)
+
+fromHex : {n} (fin n) => String (2*n) -> [8*n]
+fromHex s = join [ hexit x # hexit y | [x,y] <- groupBy`{2} s ]
+
+
+// Convert a bit string into base64
+
+base64_palette = ['A'..'Z'] # ['a'..'z'] # ['0'..'9'] # ['+'] # ['/']
+
+base64 : {a} [6 * a] -> [a][8]
+base64 bits = [ base64_palette @ sexet | sexet <- groupBy`{6} bits ]
+
+
+// The test data
+
+inHex  = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d"
+outB64 = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+
+
+property challenge1 = outB64 == base64 (fromHex inHex)
+
+// set1ch1> :prove challenge1
+// Q.E.D.
