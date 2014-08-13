@@ -1,0 +1,22 @@
+module set1ch3 where
+
+import set1ch1
+
+code = groupBy`{8} (fromHex "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
+
+every p l = [ p x | x <- l ] == ~zero
+
+good = every good'
+ where good' c = if 'a' <= c && c <= 'z' then True
+                  | 'A' <= c && c <= 'Z' then True
+                  | '0' <= c && c <= '9' then True
+                  | ' ' == c then True
+                  | '\'' == c then True
+                 else False
+
+singleByteXor s b = [ c ^ b | c <- s ]
+
+// set1ch3> :prove \b -> good (singleByteXor code b) == False
+// (\b -> good (singleByteXor code b) == False) 'X' = False
+// set1ch3> singleByteXor code 'X'
+// "Cooking MC's like a pound of bacon"
